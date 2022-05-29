@@ -113,8 +113,61 @@ Berdasarkan pengujian di atas, rata-rata saham Bandung dan Bali adalah sama.
 
 ## Soal 4
 Seorang Peneliti sedang meneliti spesies dari kucing di ITS . Dalam penelitiannya ia mengumpulkan data tiga spesies kucing yaitu kucing oren, kucing hitam dan kucing putih dengan panjangnya masing-masing. Jika : diketahui dataset https://intip.in/datasetprobstat1 <br>
-H0 : Tidak ada perbedaan panjang antara ketiga spesies atau rata-rata panjangnyasama <br>
+H0 : Tidak ada perbedaan panjang antara ketiga spesies atau rata-rata panjangnya sama <br>
 Maka Kerjakan atau Carilah:
+
+Pertama, simpan data terlebih dahulu menggunakan fungsi `read.table`
+```
+dataset = read.table("onewayanova.txt",h=T)
+attach(dataset)
+```
+
+a. Buatlah masing masing jenis spesies menjadi 3 subjek "Grup" (grup 1,grup 2,grup 3). Lalu Gambarkan plot kuantil normal untuk setiap kelompok dan lihat apakah ada outlier utama dalam homogenitas varians.
+```
+dataset$Group = as.factor(dataset$Group)
+dataset$Group = factor(dataset$Group,labels = c("Kucing Oren", "Kucing Hitam", "Kucing Putih"))
+class(dataset$Group)
+
+Grup1 = subset(dataset, Group == "Kucing Oren")
+Grup2 = subset(dataset, Group == "Kucing Hitam")
+Grup3 = subset(dataset, Group == "Kucing Putih")
+```
+#b. carilah atau periksalah Homogeneity of variances nya , Berapa nilai p yang didapatkan? , Apa hipotesis dan kesimpulan yang dapat diambil ?
+```
+bartlett.test(Length ~ Group, data = dataset)
+```
+Hasilnya adalah sebagai berikut <br>
+![4b](https://user-images.githubusercontent.com/91374949/170882190-184ef429-c8d9-4b9a-b6b5-e39582adeb9f.png)
+
+#c. Untuk uji ANOVA (satu arah), buatlah model linier dengan Panjang versus Grup dan beri nama model tersebut model 1.
+```
+model1 = lm(Length ~ Group, data = dataset)
+anova(model1)
+```
+Hasilnya adalah sebagai berikut <br>
+![4c](https://user-images.githubusercontent.com/91374949/170882202-9d325d38-f466-4e45-8535-2d6666768155.png)
+
+#d. Dari Hasil Poin C, Berapakah nilai-p ? , Apa yang dapat Anda simpulkan dari H0?
+```
+```
+
+#e. Verifikasilah jawaban model 1 dengan Post-hoc test Tukey HSD, dari nilai p yang didapatkan apakah satu jenis kucing lebih panjang dari yang lain? Jelaskan.
+```
+anv = aov(model1)
+tukey = TukeyHSD(anv)
+tukey
+```
+Hasilnya adalah sebagai berikut <br>
+![4e](https://user-images.githubusercontent.com/91374949/170882231-be6f3fca-36da-4bf9-b758-64896479bcf2.png)
+
+#f. Visualisasikan data dengan ggplot2
+```
+library(ggplot2)
+ggplot(dataset, aes(x = Group, y = Length)) + geom_boxplot(fill = "grey", colour = "black") +
+scale_x_discrete() + ylab("Length (cm)")
+```
+Hasilnya adalah sebagai berikut <br>
+![4f](https://user-images.githubusercontent.com/91374949/170882277-6ea16ef5-2104-4e7c-9a67-572a819a9b33.png)
 
 
 ## Soal 5
