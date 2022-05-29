@@ -36,3 +36,14 @@ H1 : μ Bandung ≠ μ Bali
 
 #b. Hitung Sampel Statistik
 tsum.test (n.x = nbandung, mean.x=meanbandung, s.x = sdbandung, n.y = nbali, mean.y=meanbali,  s.y=sdbali, var.equal = TRUE, conf.level = 0.95)
+
+#c. Lakukan Uji Statistik (df =2)
+
+#d. Nilai Kritikal
+qt(p = 0.025, df = 2, lower.tail = FALSE)
+
+#e. Keputusan
+#H0 ditolak
+
+#f. Kesimpulan
+#Berdasarkan pengujian di atas, rata-rata saham Bandung dan Bali adalah sama.
